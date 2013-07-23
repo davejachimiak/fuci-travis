@@ -1,6 +1,7 @@
 require 'minitest/spec/expect'
 require 'minitest/autorun'
 require 'mocha'
+require 'ostruct'
 
 def stub_class klass
   objects = klass.split '::'
