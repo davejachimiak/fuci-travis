@@ -1,6 +1,6 @@
 require 'minitest/spec/expect'
 require 'minitest/autorun'
-require 'mocha'
+require 'mocha/setup'
 require 'ostruct'
 
 def stub_class klass
