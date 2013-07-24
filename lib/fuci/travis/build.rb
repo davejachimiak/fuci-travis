@@ -3,7 +3,7 @@ module Fuci
     class Build
       attr_reader :branch
 
-      def initialize branch=default_branch
+      def initialize branch=current_branch
         @branch = branch
       end
 
@@ -15,11 +15,6 @@ module Fuci
         else
           new
         end
-      end
-
-      private
-
-      def default_branch
       end
     end
   end

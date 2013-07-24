@@ -13,7 +13,7 @@ describe Fuci::Travis::Build do
     describe 'if a branch is not passed in' do
       it 'sets #branch to the current branch' do
         Fuci::Travis::Build.any_instance.
-          stubs(:default_branch).
+          stubs(:current_branch).
           returns branch = mock
         build = Fuci::Travis::Build.new
         expect(build.branch).to_equal branch
