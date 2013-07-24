@@ -2,6 +2,25 @@ require_relative '../../../spec_helper'
 require_relative '../../../../lib/fuci/travis/build'
 
 describe Fuci::Travis::Build do
+  describe '#initialize' do
+    describe 'if a branch is passed in' do
+      it 'sets it to #branch' do
+        build = Fuci::Travis::Build.new branch = mock
+        expect(build.branch).to_equal branch
+      end
+    end
+
+    describe 'if a branch is not passed in' do
+      it 'sets #branch to the current branch' do
+        Fuci::Travis::Build.any_instance.
+          stubs(:default_branch).
+          returns branch = mock
+        build = Fuci::Travis::Build.new
+        expect(build.branch).to_equal branch
+      end
+    end
+  end
+
   describe '.create' do
     before do
       @expect_new_build = Fuci::Travis::Build.expects :new

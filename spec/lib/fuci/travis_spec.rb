@@ -12,14 +12,4 @@ describe Fuci::Travis do
       expect(Fuci::Travis.default_branch).to_equal @branch
     end
   end
-
-  describe '.configure' do
-    it 'yields the block with self' do
-      Fuci::Travis.expects(:puts).with 'configuring!'
-
-      Fuci::Travis.configure do |ft|
-        ft.send :puts, 'configuring!'
-      end
-    end
-  end
 end
