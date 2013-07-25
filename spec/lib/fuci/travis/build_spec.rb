@@ -1,6 +1,13 @@
 require_relative '../../../spec_helper'
 require_relative '../../../../lib/fuci/travis/build'
 
+# stub_class 'IO' do
+#   public
+#   def self.popen command
+#     yield command
+#   end
+# end
+
 describe Fuci::Travis::Build do
   describe '#initialize' do
     describe 'if a branch is passed in' do
@@ -18,6 +25,24 @@ describe Fuci::Travis::Build do
         build = Fuci::Travis::Build.new
         expect(build.branch).to_equal branch
       end
+    end
+  end
+
+  describe '#current_branch' do
+    it 'returns the current branch' do
+      current_branch = 'current_branch'
+      build          = Fuci::Travis::Build.new ''
+      build.stubs(:current_branch_command).returns "echo #{current_branch}"
+
+      expect(build.send :current_branch ).to_equal current_branch
+    end
+  end
+
+  describe '#current_branch_command' do
+    it 'returns the git/unix command to returnt the current branch' do
+      build = Fuci::Travis::Build.new ''
+      current_branch_command = build.send :current_branch_command
+      expect(current_branch_command).to_equal "git branch | sed -n '/\* /s///p'"
     end
   end
 
