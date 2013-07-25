@@ -6,12 +6,16 @@ module Fuci
     class Server < Fuci::Server
       extend Forwardable
 
+      attr_reader   :build
       def_delegator :build, :status, :build_status
-      def_delegator :build, :log, :fetch_log
-      attr_reader :build
+      def_delegator :build, :log
 
       def initialize
-        @build = Fuci::Travis::Build.new
+        @build = Fuci::Travis::Build.create
+      end
+
+      def fetch_log
+        remove_ascii_color_chars log
       end
     end
   end

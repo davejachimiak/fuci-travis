@@ -9,8 +9,8 @@ module Fuci
       FAILED                 = 'failed'
       PASSED                 = 'passed'
 
-      def_delegator :branch, :state
-      attr_reader :branch
+      attr_reader    :branch
+      def_delegators :branch, :state, :jobs
 
       def initialize branch_name
         @branch = build_branch branch_name
@@ -25,6 +25,10 @@ module Fuci
         else
           :yellow
         end
+      end
+
+      def log
+        jobs.first.log.body
       end
 
       def self.create

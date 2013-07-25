@@ -18,7 +18,7 @@ describe Fuci::Travis::Server do
 
   describe '#initialize' do
     it 'sets a build instance' do
-      Fuci::Travis::Build.stubs(:new).returns build = mock
+      Fuci::Travis::Build.stubs(:create).returns build = mock
       server = Fuci::Travis::Server.new
       expect(server.build).to_equal build
     end
@@ -37,8 +37,11 @@ describe Fuci::Travis::Server do
     it 'delegates to the build object' do
       @server.stubs(:build).
         returns OpenStruct.new log: log = mock
+      @server.stubs(:remove_ascii_color_chars).
+        with(log).
+        returns sanitized_log = mock
 
-      expect(@server.fetch_log).to_equal log
+      expect(@server.fetch_log).to_equal sanitized_log
     end
   end
 end

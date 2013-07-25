@@ -48,6 +48,23 @@ describe Fuci::Travis::Build do
     end
   end
 
+  describe '#log' do
+    it 'returns the log body from the build' do
+      Fuci::Travis::Build.any_instance.
+        stubs(:build_branch).
+        returns branch = mock
+
+      build    = Fuci::Travis::Build.new ''
+      log_body = 'brody'
+      log      = OpenStruct.new(body: log_body)
+      jobs     = [OpenStruct.new(log: log)]
+
+      build.branch.stubs(:jobs).returns jobs
+
+      expect(build.log).to_equal log_body
+    end
+  end
+
   describe '.create' do
     before do
       @expect_from_branch_name = Fuci::Travis::Build.expects :from_branch_name
