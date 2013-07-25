@@ -14,6 +14,40 @@ describe Fuci::Travis::Build do
     end
   end
 
+  describe '#status' do
+    before do
+      Fuci::Travis::Build.any_instance.stubs(:build_branch).
+        returns branch = mock
+      @build = Fuci::Travis::Build.new ''
+      @state = @build.branch.stubs :state
+    end
+
+    describe 'when the build passed' do
+      it 'returns :green' do
+        green = :green
+        @state.returns 'passed'
+
+        expect(@build.status).to_equal green
+      end
+    end
+
+    describe 'when the build failed' do
+      it 'returns :red' do
+        red = :red
+        @state.returns 'failed'
+
+        expect(@build.status).to_equal red
+      end
+    end
+
+    describe 'when the build neither passed nor failed' do
+      it 'returns :yellow' do
+        yellow = :yellow
+        expect(@build.status).to_equal yellow
+      end
+    end
+  end
+
   describe '.create' do
     before do
       @expect_from_branch_name = Fuci::Travis::Build.expects :from_branch_name

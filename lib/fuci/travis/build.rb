@@ -9,9 +9,20 @@ module Fuci
         @branch = build_branch branch_name
       end
 
+      def status
+        case branch.state
+        when 'failed'
+          :red
+        when 'passed'
+          :green
+        else
+          :yellow
+        end
+      end
+
       def self.create
         branch_name =
-          Fuci.options[:branch] ||
+          Fuci.options[:branch]       ||
           Fuci::Travis.default_branch ||
           current_branch_name
 
