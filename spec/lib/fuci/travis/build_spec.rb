@@ -1,54 +1,22 @@
 require_relative '../../../spec_helper'
 require_relative '../../../../lib/fuci/travis/build'
 
-# stub_class 'IO' do
-#   public
-#   def self.popen command
-#     yield command
-#   end
-# end
+stub_class 'Fuci::Travis::Build::Master'
 
 describe Fuci::Travis::Build do
   describe '#initialize' do
-    describe 'if a branch is passed in' do
-      it 'sets it to #branch' do
-        build = Fuci::Travis::Build.new branch = mock
-        expect(build.branch).to_equal branch
-      end
-    end
-
-    describe 'if a branch is not passed in' do
-      it 'sets #branch to the current branch' do
-        Fuci::Travis::Build.any_instance.
-          stubs(:current_branch).
-          returns branch = mock
-        build = Fuci::Travis::Build.new
-        expect(build.branch).to_equal branch
-      end
-    end
-  end
-
-  describe '#current_branch' do
-    it 'returns the current branch' do
-      current_branch = 'current_branch'
-      build          = Fuci::Travis::Build.new ''
-      build.stubs(:current_branch_command).returns "echo #{current_branch}"
-
-      expect(build.send :current_branch ).to_equal current_branch
-    end
-  end
-
-  describe '#current_branch_command' do
-    it 'returns the git/unix command to returnt the current branch' do
-      build = Fuci::Travis::Build.new ''
-      current_branch_command = build.send :current_branch_command
-      expect(current_branch_command).to_equal "git branch | sed -n '/\* /s///p'"
+    it 'builds the branch from the branch name passed in' do
+      Fuci::Travis::Build.any_instance.stubs(:build_branch).
+        with(branch_name = mock).
+        returns branch = mock
+      build = Fuci::Travis::Build.new branch_name
+      expect(build.branch).to_equal branch
     end
   end
 
   describe '.create' do
     before do
-      @expect_new_build = Fuci::Travis::Build.expects :new
+      @expect_from_branch_name = Fuci::Travis::Build.expects :from_branch_name
     end
 
     describe 'a branch option is declared from the command line' do
@@ -58,7 +26,7 @@ describe Fuci::Travis::Build do
       end
 
       it 'takes priority' do
-        @expect_new_build.with @branch
+        @expect_from_branch_name.with @branch
         Fuci::Travis::Build.create
       end
     end
@@ -73,7 +41,7 @@ describe Fuci::Travis::Build do
         end
 
         it 'creates a new ::Build with the default branch' do
-          @expect_new_build.with @branch
+          @expect_from_branch_name.with @branch
           Fuci::Travis::Build.create
         end
       end
@@ -81,11 +49,66 @@ describe Fuci::Travis::Build do
       describe 'a default branch is not specified on Fuci::Travis' do
         before { Fuci::Travis.stubs(:default_branch).returns nil }
 
-        it 'creates a new ::Build with nothing' do
-          @expect_new_build.with
+        it 'creates a new ::Build with the current branch' do
+          Fuci::Travis::Build.
+            stubs(:current_branch_name).
+            returns branch_name = mock
+          @expect_from_branch_name.with branch_name
           Fuci::Travis::Build.create
         end
       end
+    end
+  end
+
+  describe '.from_branch_name' do
+    describe 'the branch name is master' do
+      before { @branch_name = 'master' }
+
+      it 'creates a new Master build' do
+        Fuci::Travis::Build::Master.stubs(:new).returns master_build = mock
+        build = Fuci::Travis::Build.from_branch_name @branch_name
+        expect(build).to_equal master_build
+      end
+    end
+
+    describe 'the branch name is not master' do
+      before { @branch_name = 'limb' }
+
+      it 'creates a new generic build' do
+        Fuci::Travis::Build.stubs(:new).returns generic_build = mock
+        build = Fuci::Travis::Build.from_branch_name @branch_name
+        expect(build).to_equal generic_build
+      end
+    end
+  end
+
+  describe '#build_branch' do
+    it 'calls branch hash with the branch_name on the repo' do
+      Fuci::Travis.stubs(:repo).returns repo = mock
+      repo.stubs(:branches).returns branches = { 'my-ci' => 'build' }
+
+      build = Fuci::Travis::Build.new ''
+
+      expect(build.send :build_branch, 'my-ci' ).to_equal 'build'
+    end
+  end
+
+  describe '.current_branch_name' do
+    it 'returns the current branch' do
+      current_branch = 'current_branch'
+      Fuci::Travis::Build.
+        stubs(:current_branch_command).
+        returns "echo #{current_branch}"
+
+      expect(Fuci::Travis::Build.send :current_branch_name ).
+        to_equal current_branch
+    end
+  end
+
+  describe '.current_branch_command' do
+    it 'returns the git/unix command to returnt the current branch' do
+      current_branch_command = Fuci::Travis::Build.send :current_branch_command
+      expect(current_branch_command).to_equal "git branch | sed -n '/\* /s///p'"
     end
   end
 end

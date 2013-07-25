@@ -2,17 +2,25 @@ module Fuci
   module Travis
     class Build
       CURRENT_BRANCH_COMMAND = "git branch | sed -n '/\* /s///p'"
+
       attr_reader :branch
 
-      def initialize branch=current_branch
-        @branch = branch
+      def initialize branch_name
+        @branch = build_branch branch_name
       end
 
       def self.create
-        if command_line_branch = Fuci.options[:branch]
-          new command_line_branch
-        elsif default_branch = Fuci::Travis.default_branch
-          new default_branch
+        branch_name =
+          Fuci.options[:branch] ||
+          Fuci::Travis.default_branch ||
+          current_branch_name
+
+        from_branch_name branch_name
+      end
+
+      def self.from_branch_name branch_name
+        if branch_name == 'master'
+          Fuci::Travis::Build::Master.new
         else
           new
         end
@@ -20,13 +28,17 @@ module Fuci
 
       private
 
-      def current_branch
+      def build_branch branch_name
+        Fuci::Travis.repo.branches[branch_name]
+      end
+
+      def self.current_branch_name
         IO.popen current_branch_command do |io|
           io.first.chomp
         end
       end
 
-      def current_branch_command
+      def self.current_branch_command
         CURRENT_BRANCH_COMMAND
       end
     end
