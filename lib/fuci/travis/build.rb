@@ -1,8 +1,15 @@
+require 'forwardable'
+
 module Fuci
   module Travis
     class Build
-      CURRENT_BRANCH_COMMAND = "git branch | sed -n '/\* /s///p'"
+      extend Forwardable
 
+      CURRENT_BRANCH_COMMAND = "git branch | sed -n '/\* /s///p'"
+      FAILED                 = 'failed'
+      PASSED                 = 'passed'
+
+      def_delegator :branch, :state
       attr_reader :branch
 
       def initialize branch_name
@@ -10,10 +17,10 @@ module Fuci
       end
 
       def status
-        case branch.state
-        when 'failed'
+        case state
+        when FAILED
           :red
-        when 'passed'
+        when PASSED
           :green
         else
           :yellow
