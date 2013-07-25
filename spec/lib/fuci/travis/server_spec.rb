@@ -18,7 +18,7 @@ describe Fuci::Travis::Server do
 
   describe '#initialize' do
     it 'sets a build instance' do
-      Fuci::Travis::Build.stubs(:create).returns build = mock
+      Fuci::Travis::Build.stubs(:new).returns build = mock
       server = Fuci::Travis::Server.new
       expect(server.build).to_equal build
     end

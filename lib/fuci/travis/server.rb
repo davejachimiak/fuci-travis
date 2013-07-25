@@ -11,7 +11,7 @@ module Fuci
       attr_reader :build
 
       def initialize
-        @build = Fuci::Travis::Build.create
+        @build = Fuci::Travis::Build.new
       end
     end
   end
