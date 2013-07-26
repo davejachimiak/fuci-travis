@@ -9,11 +9,15 @@ module Fuci
       FAILED                 = 'failed'
       PASSED                 = 'passed'
 
-      attr_reader    :branch
+      attr_reader    :branch_name
       def_delegators :branch, :state, :jobs
 
       def initialize branch_name
-        @branch = build_branch branch_name
+        @branch_name = branch_name
+      end
+
+      def branch
+        @branch ||= build_branch
       end
 
       def status
@@ -44,14 +48,18 @@ module Fuci
         if branch_name == 'master'
           Fuci::Travis::Build::Master.new
         else
-          new
+          new branch_name
         end
       end
 
       private
 
-      def build_branch branch_name
-        Fuci::Travis.repo.branches[branch_name]
+      def build_branch
+        repo.branches[branch_name]
+      end
+
+      def repo
+        Fuci::Travis.repo
       end
 
       def self.current_branch_name

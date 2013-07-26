@@ -1,14 +1,11 @@
 require_relative '../../../spec_helper'
 require_relative '../../../../lib/fuci/travis/server'
 
-stub_class 'Fuci::Travis::Build' do
-  public
-  def create;
-  end
-end
-
 describe Fuci::Travis::Server do
-  before { @server = Fuci::Travis::Server.new }
+  before do
+    Fuci::Travis::Build.stubs(:create).returns @build = mock
+    @server = Fuci::Travis::Server.new
+  end
 
   describe 'composition' do
     it 'inherits from Fuci::Server' do
@@ -18,9 +15,8 @@ describe Fuci::Travis::Server do
 
   describe '#initialize' do
     it 'sets a build instance' do
-      Fuci::Travis::Build.stubs(:create).returns build = mock
       server = Fuci::Travis::Server.new
-      expect(server.build).to_equal build
+      expect(server.build).to_equal @build
     end
   end
 

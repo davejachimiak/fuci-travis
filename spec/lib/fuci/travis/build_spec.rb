@@ -5,11 +5,16 @@ stub_class 'Fuci::Travis::Build::Master'
 
 describe Fuci::Travis::Build do
   describe '#initialize' do
-    it 'builds the branch from the branch name passed in' do
-      Fuci::Travis::Build.any_instance.stubs(:build_branch).
-        with(branch_name = mock).
-        returns branch = mock
-      build = Fuci::Travis::Build.new branch_name
+    it 'sets the branch name' do
+      build = Fuci::Travis::Build.new branch_name = 'name'
+      expect(build.branch_name).to_equal branch_name
+    end
+  end
+
+  describe '#branch' do
+    it 'sets a memoized branch with build_branch' do
+      build = Fuci::Travis::Build.new 'name'
+      build.stubs(:build_branch).returns branch = mock
       expect(build.branch).to_equal branch
     end
   end
@@ -126,7 +131,8 @@ describe Fuci::Travis::Build do
       before { @branch_name = 'limb' }
 
       it 'creates a new generic build' do
-        Fuci::Travis::Build.stubs(:new).returns generic_build = mock
+        Fuci::Travis::Build.stubs(:new).with(@branch_name).
+          returns generic_build = mock
         build = Fuci::Travis::Build.from_branch_name @branch_name
         expect(build).to_equal generic_build
       end
@@ -138,9 +144,9 @@ describe Fuci::Travis::Build do
       Fuci::Travis.stubs(:repo).returns repo = mock
       repo.stubs(:branches).returns branches = { 'my-ci' => 'build' }
 
-      build = Fuci::Travis::Build.new ''
+      build = Fuci::Travis::Build.new 'my-ci'
 
-      expect(build.send :build_branch, 'my-ci' ).to_equal 'build'
+      expect(build.send :build_branch ).to_equal 'build'
     end
   end
 

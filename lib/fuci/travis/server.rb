@@ -1,4 +1,5 @@
 require 'fuci/server'
+require 'fuci/travis/build'
 require 'forwardable'
 
 module Fuci
