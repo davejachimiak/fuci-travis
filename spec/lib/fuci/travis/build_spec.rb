@@ -149,23 +149,4 @@ describe Fuci::Travis::Build do
       expect(build.send :build_branch ).to_equal 'build'
     end
   end
-
-  describe '.current_branch_name' do
-    it 'returns the current branch' do
-      current_branch = 'current_branch'
-      Fuci::Travis::Build.
-        stubs(:current_branch_command).
-        returns "echo #{current_branch}"
-
-      expect(Fuci::Travis::Build.send :current_branch_name ).
-        to_equal current_branch
-    end
-  end
-
-  describe '.current_branch_command' do
-    it 'returns the git/unix command to returnt the current branch' do
-      current_branch_command = Fuci::Travis::Build.send :current_branch_command
-      expect(current_branch_command).to_equal "git branch | sed -n '/\* /s///p'"
-    end
-  end
 end

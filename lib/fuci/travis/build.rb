@@ -1,9 +1,11 @@
 require 'forwardable'
+require 'fuci/git'
 
 module Fuci
   module Travis
     class Build
       extend Forwardable
+      extend Fuci::Git
 
       CURRENT_BRANCH_COMMAND = "git branch | sed -n '/\* /s///p'"
       FAILED                 = 'failed'
@@ -60,16 +62,6 @@ module Fuci
 
       def repo
         Fuci::Travis.repo
-      end
-
-      def self.current_branch_name
-        IO.popen current_branch_command do |io|
-          io.first.chomp
-        end
-      end
-
-      def self.current_branch_command
-        CURRENT_BRANCH_COMMAND
       end
     end
   end
