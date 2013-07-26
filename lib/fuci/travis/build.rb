@@ -4,12 +4,11 @@ require 'fuci/git'
 module Fuci
   module Travis
     class Build
-      extend Forwardable
-      extend Fuci::Git
+      extend  Forwardable
+      include Fuci::Git
 
-      CURRENT_BRANCH_COMMAND = "git branch | sed -n '/\* /s///p'"
-      FAILED                 = 'failed'
-      PASSED                 = 'passed'
+      FAILED = 'failed'
+      PASSED = 'passed'
 
       attr_reader    :branch_name
       def_delegators :branch, :state, :jobs

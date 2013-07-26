@@ -1,6 +1,10 @@
-require "fuci/travis/version"
+require 'fuci/travis/version'
+
 require 'fuci'
 require 'fuci/git'
+
+require 'travis/pro'
+require 'fuci/travis/server'
 
 module Fuci
   module Travis
