@@ -5,8 +5,6 @@ require 'fuci/git'
 require 'fuci/configurable'
 require 'fuci/travis/server'
 
-require 'travis/pro'
-
 module Fuci
   configure do |fu|
     fu.server = Fuci::Travis::Server
@@ -17,11 +15,17 @@ module Fuci
     extend  Fuci::Git
 
     class << self
-      attr_accessor :default_branch
+      attr_accessor :default_branch, :access_token
     end
 
     def self.repo
-      @repo ||= ::Travis::Pro::Repository.find remote_repo_name
+      @repo ||= if pro
+                  require 'travis/pro'
+                  ::Travis::Pro::Repository.find remote_repo_name
+                else
+                  require 'travis'
+                  ::Travis::Repository.find remote_repo_name
+                end
     end
 
     def self.pro
