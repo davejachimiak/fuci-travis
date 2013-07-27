@@ -23,5 +23,13 @@ module Fuci
     def self.repo
       @repo ||= ::Travis::Pro::Repository.find remote_repo_name
     end
+
+    def self.pro
+      @pro ||= false
+    end
+
+    def self.pro= boolean
+      @pro = boolean
+    end
   end
 end

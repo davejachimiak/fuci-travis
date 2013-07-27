@@ -25,4 +25,14 @@ describe Fuci::Travis do
       expect(Fuci::Travis.repo).to_equal repo
     end
   end
+
+  describe '.pro' do
+    after { Fuci::Travis.instance_variable_set :@pro, false }
+
+    it "is either false or what it's set to" do
+      expect(Fuci::Travis.pro).to_equal false
+      Fuci::Travis.pro = true
+      expect(Fuci::Travis.pro).to_equal true
+    end
+  end
 end
