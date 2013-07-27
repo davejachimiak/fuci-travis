@@ -1,10 +1,11 @@
 require 'forwardable'
 require 'fuci/git'
+require 'fuci/travis/build/master'
 
 module Fuci
   module Travis
     class Build
-      extend  Forwardable
+      extend  Forwardable, Fuci::Git
       include Fuci::Git
 
       FAILED = 'failed'
