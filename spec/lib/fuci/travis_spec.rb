@@ -18,8 +18,10 @@ describe Fuci::Travis do
 
   describe '.repo' do
     before do
-      @pro  = Fuci::Travis.stubs :pro
-      @repo = mock
+      @pro          = Fuci::Travis.stubs :pro
+      @repo         = mock
+      @access_token = 'asdfjk;'
+      Fuci::Travis.stubs(:access_token).returns @access_token
       Fuci::Travis.stubs(:remote_repo_name).
         returns @repo_name = 'owner/lib'
     end
@@ -29,7 +31,8 @@ describe Fuci::Travis do
     describe 'when pro' do
       before { @pro.returns true }
 
-      it 'returns the repo from ::Travis::Pro' do
+      it 'sets the token and returns the repo from ::Travis::Pro' do
+        Travis::Pro.expects(:access_token=).with @access_token
         Travis::Pro::Repository.stubs(:find).
           with(@repo_name).
           returns @repo
@@ -42,6 +45,7 @@ describe Fuci::Travis do
       before { @pro.returns false }
 
       it 'returns the repo form ::Travis' do
+        Travis.expects(:access_token=).with @access_token
         Travis::Repository.stubs(:find).
           with(@repo_name).
           returns @repo

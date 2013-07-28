@@ -29,8 +29,10 @@ module Fuci
 
     def self.repo
       @repo ||= if pro
+                  ::Travis::Pro.access_token = access_token
                   ::Travis::Pro::Repository.find remote_repo_name
                 else
+                  ::Travis.access_token = access_token
                   ::Travis::Repository.find remote_repo_name
                 end
     end
