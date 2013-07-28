@@ -2,4 +2,6 @@
 
 require 'fuci/travis'
 
+Fuci.options[:branch] = ARGV[0]
+
 Fuci.run
