@@ -17,41 +17,17 @@ describe Fuci::Travis do
   end
 
   describe '.repo' do
-    before do
-      @pro          = Fuci::Travis.stubs :pro
-      @repo         = mock
-      @access_token = 'asdfjk;'
-      Fuci::Travis.stubs(:access_token).returns @access_token
-      Fuci::Travis.stubs(:remote_repo_name).
-        returns @repo_name = 'owner/lib'
-    end
-
     after { Fuci::Travis.instance_variable_set :@repo, nil }
 
-    describe 'when pro' do
-      before { @pro.returns true }
+    it 'sets the token and returns the repo from ::Travis::Pro' do
+      Fuci::Travis.stubs(:remote_repo_name).
+        returns repo_name = 'dj/fuci'
+      Fuci::Travis.stubs(:client).returns client = mock
+      client.stubs(:find).
+        with(repo_name).
+        returns repo = mock
 
-      it 'sets the token and returns the repo from ::Travis::Pro' do
-        Travis::Pro.expects(:access_token=).with @access_token
-        Travis::Pro::Repository.stubs(:find).
-          with(@repo_name).
-          returns @repo
-
-        expect(Fuci::Travis.repo).to_equal @repo
-      end
-    end
-
-    describe 'when not pro' do
-      before { @pro.returns false }
-
-      it 'returns the repo form ::Travis' do
-        Travis.expects(:access_token=).with @access_token
-        Travis::Repository.stubs(:find).
-          with(@repo_name).
-          returns @repo
-
-        expect(Fuci::Travis.repo).to_equal @repo
-      end
+      expect(Fuci::Travis.repo).to_equal repo
     end
   end
 
@@ -80,6 +56,56 @@ describe Fuci::Travis do
       Fuci.expects(:add_testers).with testers
 
       Fuci::Travis.add_testers testers
+    end
+  end
+
+  describe '.configure' do
+    before do
+      Fuci::Travis.expects(:puts).with 'configuring'
+      Fuci::Travis.expects :set_client
+      Fuci::Travis.expects :set_access_token
+    end
+
+    it 'yields the block with self, ' +
+       'sets the client, ' +
+       'and sets the access token' do
+      Fuci::Travis.configure do |fu|
+        fu.puts 'configuring'
+      end
+    end
+  end
+
+  describe '.set_client' do
+    after { Fuci::Travis.instance_variable_set :@client, nil }
+
+    describe 'when pro' do
+      before { Fuci::Travis.stubs(:pro).returns true }
+
+      it 'sets the travis strategy to ::Travis::Pro' do
+        Fuci::Travis.set_client
+
+        expect(Fuci::Travis.client).to_equal ::Travis::Pro
+      end
+    end
+
+    describe 'when not pro' do
+      before { Fuci::Travis.stubs(:pro).returns false }
+
+      it 'sets the travis strategy to ::Travis' do
+        Fuci::Travis.set_client
+
+        expect(Fuci::Travis.client).to_equal ::Travis
+      end
+    end
+  end
+
+  describe '.set_access_token' do
+    it 'sets the access token on the client' do
+      Fuci::Travis.stubs(:access_token).returns access_token = mock
+      Fuci::Travis.stubs(:client).returns client = mock
+      client.expects(:access_token=).with access_token
+
+      Fuci::Travis.set_access_token
     end
   end
 end
