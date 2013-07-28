@@ -19,15 +19,32 @@ describe Fuci::Travis do
   describe '.repo' do
     after { Fuci::Travis.instance_variable_set :@repo, nil }
 
-    it 'sets the token and returns the repo from ::Travis::Pro' do
-      Fuci::Travis.stubs(:remote_repo_name).
-        returns repo_name = 'dj/fuci'
-      Fuci::Travis.stubs(:client).returns client = mock
-      client.stubs(:find).
-        with(repo_name).
-        returns repo = mock
+    describe 'on initial call' do
+      before do
+        Fuci::Travis.stubs(:remote_repo_name).
+          returns repo_name = 'dj/fuci'
+        Fuci::Travis.stubs(:client).returns client = mock
+        client.stubs(:find).
+          with(repo_name).
+          returns @repo = mock
+        Fuci::Travis.expects(:puts).with 'Finding repo...'
+        Fuci::Travis.expects(:puts).with 'Using repo: dj/fuci'
+      end
 
-      expect(Fuci::Travis.repo).to_equal repo
+      it 'logs the query and returns the repo from ::Travis::Pro' do
+        expect(Fuci::Travis.repo).to_equal @repo
+      end
+    end
+
+    describe 'after memoized' do
+      before do
+        @repo = mock
+        Fuci::Travis.instance_variable_set :@repo, @repo
+      end
+
+      it 'just returns the repo' do
+        expect(Fuci::Travis.repo).to_equal @repo
+      end
     end
   end
 

@@ -1,9 +1,8 @@
-require 'fuci/travis/version'
-
 require 'fuci'
 require 'fuci/git'
 require 'fuci/configurable'
 require 'fuci/travis/server'
+require 'fuci/travis/version'
 
 require 'travis'
 require 'travis/pro'
@@ -31,7 +30,11 @@ module Fuci
     end
 
     def self.repo
-      @repo ||= client.find remote_repo_name
+      return @repo if @repo
+      puts 'Finding repo...'
+      @repo = client.find remote_repo_name
+      puts "Using repo: #{remote_repo_name}"
+      @repo
     end
 
     def self.pro
