@@ -18,7 +18,7 @@ describe Fuci::Travis do
 
   describe '.repo' do
     before do
-      @pro  = Fuci::Travis.stubs(:pro)
+      @pro  = Fuci::Travis.stubs :pro
       @repo = mock
       Fuci::Travis.stubs(:remote_repo_name).
         returns @repo_name = 'owner/lib'
