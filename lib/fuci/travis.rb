@@ -8,6 +8,8 @@ require 'fuci/travis/server'
 require 'travis'
 require 'travis/pro'
 
+require 'forwardable'
+
 module Fuci
   configure do |fu|
     fu.server = Fuci::Travis::Server
@@ -18,8 +20,11 @@ module Fuci
     extend  Fuci::Git
 
     class << self
+      extend  Forwardable
+
       attr_accessor :default_branch, :access_token
       attr_writer   :pro
+      def_delegator :Fuci, :add_testers
     end
 
     def self.repo

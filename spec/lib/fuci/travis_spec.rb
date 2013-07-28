@@ -69,4 +69,13 @@ describe Fuci::Travis do
       expect(Fuci::Travis.access_token).to_equal @access_token
     end
   end
+
+  describe '.add_testers' do
+    it 'delegates to Fuci module' do
+      testers = [mock, mock]
+      Fuci.expects(:add_testers).with testers
+
+      Fuci::Travis.add_testers testers
+    end
+  end
 end
