@@ -2,6 +2,12 @@
 
 require 'fuci/travis'
 
+begin
+  load '.fuci.rb'
+rescue
+  p 'No .fuci.rb file detected'
+end
+
 Fuci.options[:branch] = ARGV[0]
 
 Fuci.run
