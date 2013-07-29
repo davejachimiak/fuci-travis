@@ -76,8 +76,8 @@ end
 ### Default branch
 
 If you push to a dedicated ci branch to check your changes before
-merging into master, you can that branch as the default branch it to
-the configuration:
+merging into master, set that branch as the default branch in the
+configuration:
 ```ruby
 Fuci::Travis.configure do |fu|
   fu.default_branch = 'my-ci'
@@ -100,7 +100,19 @@ See the base Fuci repo for more information on custom testers.
 
 ## Usage
 
-TODO: Write usage instructions here
+To run your latest ci failures locally:
+```sh
+fuci
+```
+`fuci` will attempt to fetch the default branch declared in the
+configuration. If no default branch is declared, it will attempt to
+fetch your current local branch.
+
+To run another remote branch's failures against your current local
+branch, call the branch after the call to `fuci`:
+```sh
+fuci master
+```
 
 ## Contributing
 
