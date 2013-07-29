@@ -17,12 +17,17 @@ Or install it yourself as:
     $ gem install fuci-travis
 
 ## Configuration
-### Configuration file and access tokens
+### Configuration file
 
 fuci-travis looks for a file called ".fuci-travis.rb" in your project's
 root directory. It's recommended that you configure fuci-travis there.
 The configuration must include your Travis access token. **Therefore,
 you should include .fuci-travis.rb into .gitignore.**
+
+".fuci-travis.rb" should include a call to `Fuci::Travis.configure` with
+a block that sets your access token and other options.
+
+### Access tokens
 
 fuci-travis ships with the Travis gem. It includes the Travis CLI and
 Ruby wrapper. You'll use the Travis CLI to get your access token.
@@ -31,12 +36,12 @@ Ruby wrapper. You'll use the Travis CLI to get your access token.
 
 On the command line, log into Travis via Github OAuth:
 ```sh
-travis login
+$ travis login
 ```
 
 Then get your token:
 ```sh
-travis token
+$ travis token
 # Your access token is <access token>
 ```
 
@@ -55,12 +60,12 @@ This is similar to the process for public repositories, but uses the
 
 On the command line, log into Travis via Github OAuth:
 ```sh
-travis login --pro
+$ travis login --pro
 ```
 
 Then get your token:
 ```sh
-travis token --pro
+$ travis token --pro
 # Your access token is <access token>
 ```
 
@@ -102,16 +107,16 @@ See the base Fuci repo for more information on custom testers.
 
 To run your latest ci failures locally:
 ```sh
-fuci
+$ fuci
 ```
 `fuci` will attempt to fetch the default branch declared in the
 configuration. If no default branch is declared, it will attempt to
 fetch your current local branch.
 
 To run another remote branch's failures against your current local
-branch, call the branch after the call to `fuci`:
+branch, call `fuci` with the branch:
 ```sh
-fuci master
+$ fuci master
 ```
 
 ## Contributing
