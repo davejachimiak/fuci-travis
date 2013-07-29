@@ -21,14 +21,13 @@ Or install it yourself as:
 
 fuci-travis looks for a file called ".fuci-travis.rb" in your project's
 root directory. It's recommended that you configure fuci-travis there.
-
 The configuration must include your Travis access token. **Therefore,
 you should include .fuci-travis.rb into .gitignore.**
 
 fuci-travis ships with the Travis gem. It includes the Travis CLI and
 Ruby wrapper. You'll use the Travis CLI to get your access token.
 
-### Travis for public repositories
+#### Travis for public repositories
 
 On the command line, log into Travis via Github OAuth:
 
@@ -52,7 +51,7 @@ Fuci::Travis.configure do |fu|
 end
 ```
 
-### Travis for private repositories
+#### Travis for private repositories
 
 This is similar to the process for public repositories, but uses the
 `--pro` flag.
