@@ -22,7 +22,7 @@ describe Fuci::Travis do
     describe 'on initial call' do
       before do
         Fuci::Travis.stubs(:remote_repo_name).
-          returns repo_name = 'dj/fuci'
+          returns @repo_name = 'dj/fuci'
         class Client
           class Repository
             def self.find r
@@ -30,15 +30,32 @@ describe Fuci::Travis do
           end
         end
         Fuci::Travis.stubs(:client).returns Client
-        Client::Repository.stubs(:find).
-          with(repo_name).
-          returns @repo = mock
         Fuci::Travis.expects(:puts).with 'Finding repo...'
-        Fuci::Travis.expects(:puts).with "Using repo: #{repo_name}"
       end
 
-      it 'logs the query and returns the repo from ::Travis::Pro' do
-        expect(Fuci::Travis.repo).to_equal @repo
+      describe 'if the repo can be found' do
+        before do
+          Client::Repository.stubs(:find).
+            with(@repo_name).
+            returns @repo = mock
+          Fuci::Travis.expects(:puts).with "Using repo: #{@repo_name}"
+        end
+
+        it 'logs the query and returns the repo from ::Travis::Pro' do
+          expect(Fuci::Travis.repo).to_equal @repo
+        end
+      end
+
+      describe 'if the repo cannot be found' do
+        before do
+          Client::Repository.stubs(:find).raises
+          Fuci::Travis.expects(:puts).
+            with "#{@repo_name} repo could not be found on Travis."
+        end
+
+        it "logs that the repo couldn't be found and exits" do
+          Fuci::Travis.repo
+        end
       end
     end
 
