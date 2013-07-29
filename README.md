@@ -30,13 +30,11 @@ Ruby wrapper. You'll use the Travis CLI to get your access token.
 #### Travis for public repositories
 
 On the command line, log into Travis via Github OAuth:
-
 ```sh
 travis login
 ```
 
 Then get your token:
-
 ```sh
 travis token
 # Your access token is <access token>
@@ -44,7 +42,6 @@ travis token
 
 Then, in .fuci-travis.rb, configure fuci-travis with your access token
 as a string:
-
 ```ruby
 Fuci::Travis.configure do |fu|
   fu.access_token = '<access token>'
@@ -57,13 +54,11 @@ This is similar to the process for public repositories, but uses the
 `--pro` flag.
 
 On the command line, log into Travis via Github OAuth:
-
 ```sh
 travis login --pro
 ```
 
 Then get your token:
-
 ```sh
 travis token --pro
 # Your access token is <access token>
@@ -71,13 +66,37 @@ travis token --pro
 
 Then, in .fuci-travis.rb, **set `pro` to true** and configure
 fuci-travis with your access token as a string:
-
 ```ruby
 Fuci::Travis.configure do |fu|
   fu.pro          = true
   fu.access_token = '<access token>'
 end
 ```
+
+### Default branch
+
+If you push to a dedicated ci branch to check your changes before
+merging into master, you can that branch as the default branch it to
+the configuration:
+```ruby
+Fuci::Travis.configure do |fu|
+  fu.default_branch = 'my-ci'
+  fu.access_token   = '<access token>'
+end
+```
+
+### Adding custom tester plugins
+
+Fuci ships with some tester plugins. If you want to add custom testers,
+add them in the configuration:
+```ruby
+Fuci::Travis.configure do |fu|
+  fu.add_testers Fuci::Spec, Fuci::Jasmine
+  fu.access_token = '<access token>'
+end
+```
+
+See the base Fuci repo for more information on custom testers.
 
 ## Usage
 
