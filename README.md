@@ -23,7 +23,7 @@ To configure itself, fuci-travis looks for a file called
 ".fuci-travis.rb" in your project's root directory. You should create
 that file and configure fuci-travis there. The configuration must
 include your Travis access token. **Therefore, you should include
-./.fuci-travis.rb into .gitignore.**
+./.fuci-travis.rb in .gitignore.**
 
 That configuration file should include a call to
 `Fuci::Travis.configure` with a block that sets your access token and
