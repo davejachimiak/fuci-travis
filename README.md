@@ -30,8 +30,9 @@ other options.
 
 ### Access tokens
 
-fuci-travis ships with the Travis gem which includes the Travis CLI and
-Ruby wrapper. You'll use the Travis CLI to get your access token.
+fuci-travis ships with the
+[Travis CI Client](https://github.com/travis-ci/travis) which includes
+the Travis CLI. You'll use the Travis CLI to get your access token.
 
 #### Travis for public repositories
 
@@ -46,8 +47,8 @@ $ travis token
 # Your access token is <access token>
 ```
 
-Then, in .fuci-travis.rb, configure fuci-travis with your access token
-as a string:
+Configure fuci-travis with your access token as a string in
+.fuci-travis.rb:
 ```ruby
 Fuci::Travis.configure do |fu|
   fu.access_token = '<access token>'
@@ -105,16 +106,16 @@ See the base Fuci repo for more information on custom testers.
 
 ## Usage
 
-To run your latest ci failures locally:
+Run your latest ci failures locally:
 ```sh
 $ fuci
 ```
-`fuci` will attempt to fetch the default branch declared in the
-configuration. If no default branch is declared, it will attempt to
-fetch your current local branch.
+`fuci` will fetch the default branch declared in your configuration. If
+no default branch is declared, `fuci` will fetch your current local branch.
 
-To run another remote branch's failures against your current local
-branch, call `fuci` with the branch:
+To run a specific branch's failures branch, call `fuci` with the branch.
+For example, this will run your failures from the master branch's build
+on your local code:
 ```sh
 $ fuci master
 ```
