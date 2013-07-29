@@ -6,7 +6,7 @@ Run Travis failures locally.
 
 Add this line to your application's Gemfile:
 
-    gem 'fuci-travis'
+    gem 'fuci-travis', '~> 0.1'
 
 And then execute:
 
@@ -20,16 +20,17 @@ Or install it yourself as:
 ### Configuration file
 
 fuci-travis looks for a file called ".fuci-travis.rb" in your project's
-root directory. It's recommended that you configure fuci-travis there.
-The configuration must include your Travis access token. **Therefore,
-you should include .fuci-travis.rb into .gitignore.**
+root directory. You should create that file and configure fuci-travis
+there. The configuration must include your Travis access token.
+**Therefore, you should include .fuci-travis.rb into .gitignore.**
 
-".fuci-travis.rb" should include a call to `Fuci::Travis.configure` with
-a block that sets your access token and other options.
+That configuration file should include a call to
+`Fuci::Travis.configure` with a block that sets your access token and
+other options.
 
 ### Access tokens
 
-fuci-travis ships with the Travis gem. It includes the Travis CLI and
+fuci-travis ships with the Travis gem which includes the Travis CLI and
 Ruby wrapper. You'll use the Travis CLI to get your access token.
 
 #### Travis for public repositories
@@ -55,8 +56,7 @@ end
 
 #### Travis for private repositories
 
-This is similar to the process for public repositories, but uses the
-`--pro` flag.
+This is the same as above, but uses the Travis CLI `--pro` flag.
 
 On the command line, log into Travis via Github OAuth:
 ```sh
@@ -69,8 +69,8 @@ $ travis token --pro
 # Your access token is <access token>
 ```
 
-Then, in .fuci-travis.rb, **set `pro` to true** and configure
-fuci-travis with your access token as a string:
+Then, in .fuci-travis.rb, configure fuci-travis with your access token
+as a string and **set `pro` to true**:
 ```ruby
 Fuci::Travis.configure do |fu|
   fu.pro          = true
@@ -81,7 +81,7 @@ end
 ### Default branch
 
 If you push to a dedicated ci branch to check your changes before
-merging into master, set that branch as the default branch in the
+merging them into master, set that branch as the default in the
 configuration:
 ```ruby
 Fuci::Travis.configure do |fu|
