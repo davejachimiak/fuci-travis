@@ -22,7 +22,7 @@ Or install it yourself as:
 To configure itself, fuci-travis looks for a file called
 ".fuci-travis.rb" in your project's root directory. You should create
 that file and configure fuci-travis there. The configuration must
-include your Travis access token.**Therefore, you should include
+include your Travis access token. **Therefore, you should include
 ./.fuci-travis.rb into .gitignore.**
 
 That configuration file should include a call to
@@ -115,7 +115,7 @@ $ fuci
 no default branch is declared, `fuci` will fetch your current local branch.
 
 To run a specific branch's failures branch, call `fuci` with the branch.
-For example, this will run your failures from the master branch's build
+For example, this will run the failures from the latest master build
 on your local code:
 ```sh
 $ fuci master
