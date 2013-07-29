@@ -16,6 +16,18 @@ Or install it yourself as:
 
     $ gem install fuci-travis
 
+## Configuration
+
+fuci-travis looks for a file called ".fuci-travis.rb" in your project's
+home directory. This is where you must configure fuci-travis.
+
+Your configuration will include your Travis access token. **Therefore,
+you should include .fuci-travis.rb into .gitignore.**
+
+### Travis for public repositories
+
+### Travis for private repositories
+
 ## Usage
 
 TODO: Write usage instructions here
