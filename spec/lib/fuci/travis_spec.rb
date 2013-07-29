@@ -28,7 +28,7 @@ describe Fuci::Travis do
           with(repo_name).
           returns @repo = mock
         Fuci::Travis.expects(:puts).with 'Finding repo...'
-        Fuci::Travis.expects(:puts).with 'Using repo: dj/fuci'
+        Fuci::Travis.expects(:puts).with "Using repo: #{repo_name}"
       end
 
       it 'logs the query and returns the repo from ::Travis::Pro' do
@@ -43,6 +43,7 @@ describe Fuci::Travis do
       end
 
       it 'just returns the repo' do
+        Fuci::Travis.expects(:puts).never
         expect(Fuci::Travis.repo).to_equal @repo
       end
     end

@@ -140,13 +140,18 @@ describe Fuci::Travis::Build do
   end
 
   describe '#build_branch' do
-    it 'calls branch hash with the branch_name on the repo' do
+    before do
+      @branch_name = 'my-ci'
+      @build       = mock
       Fuci::Travis.stubs(:repo).returns repo = mock
-      repo.stubs(:branches).returns branches = { 'my-ci' => 'build' }
+      repo.stubs(:branches).returns branches = { @branch_name => @build }
+      @build_wrapper = Fuci::Travis::Build.new @branch_name
+      @build_wrapper.expects(:puts).with "Fetching #{@branch_name} branch..."
+      @build_wrapper.expects(:puts).with "Using #{@branch_name} branch."
+    end
 
-      build = Fuci::Travis::Build.new 'my-ci'
-
-      expect(build.send :build_branch ).to_equal 'build'
+    it 'logs fetching and calls branch hash with the branch_name on the repo' do
+      expect(@build_wrapper.send :build_branch ).to_equal @build
     end
   end
 end

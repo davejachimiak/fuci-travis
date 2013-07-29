@@ -57,7 +57,10 @@ module Fuci
       private
 
       def build_branch
-        repo.branches[branch_name]
+        puts "Fetching #{branch_name} branch..."
+        branch = repo.branches[branch_name]
+        puts "Using #{branch_name} branch."
+        branch
       end
 
       def repo
