@@ -111,8 +111,10 @@ Run your latest ci failures locally:
 ```sh
 $ fuci
 ```
-`fuci` will fetch the default branch declared in your configuration. If
-no default branch is declared, `fuci` will fetch your current local branch.
+`fuci` will fetch the CI failures from the default branch declared in
+your configuration. If no default branch is declared in the
+configuration, `fuci` will fetch the CI failures from the branch of the
+same name as your current local branch.
 
 To run a specific branch's failures branch, call `fuci` with the branch.
 For example, this will run the failures from the latest master build
