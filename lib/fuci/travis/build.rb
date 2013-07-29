@@ -58,9 +58,13 @@ module Fuci
 
       def build_branch
         puts "Fetching #{branch_name} branch..."
-        branch = repo.branches[branch_name]
-        puts "Using #{branch_name} branch."
-        branch
+        if branch = repo.branches[branch_name]
+          puts "Using #{branch_name} branch."
+          branch
+        else
+          puts "#{branch_name} branch not found on Travis."
+          exit
+        end
       end
 
       def repo
