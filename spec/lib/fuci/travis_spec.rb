@@ -23,8 +23,14 @@ describe Fuci::Travis do
       before do
         Fuci::Travis.stubs(:remote_repo_name).
           returns repo_name = 'dj/fuci'
-        Fuci::Travis.stubs(:client).returns client = mock
-        client.stubs(:find).
+        class Client
+          class Repository
+            def self.find r
+            end
+          end
+        end
+        Fuci::Travis.stubs(:client).returns Client
+        Client::Repository.stubs(:find).
           with(repo_name).
           returns @repo = mock
         Fuci::Travis.expects(:puts).with 'Finding repo...'

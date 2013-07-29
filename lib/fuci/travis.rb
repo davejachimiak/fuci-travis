@@ -32,7 +32,7 @@ module Fuci
     def self.repo
       return @repo if @repo
       puts 'Finding repo...'
-      @repo = client.find remote_repo_name
+      @repo = client::Repository.find remote_repo_name
       puts "Using repo: #{remote_repo_name}"
       @repo
     end
