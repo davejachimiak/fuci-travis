@@ -1,6 +1,6 @@
 # Fuci::Travis
 
-TODO: Write a gem description
+Run Travis failures locally.
 
 ## Installation
 
@@ -17,16 +17,68 @@ Or install it yourself as:
     $ gem install fuci-travis
 
 ## Configuration
+### Configuration file and access tokens
 
 fuci-travis looks for a file called ".fuci-travis.rb" in your project's
-home directory. This is where you must configure fuci-travis.
+root directory. It's recommended that you configure fuci-travis there.
 
-Your configuration will include your Travis access token. **Therefore,
+The configuration must include your Travis access token. **Therefore,
 you should include .fuci-travis.rb into .gitignore.**
+
+fuci-travis ships with the Travis gem. It includes the Travis CLI and
+Ruby wrapper. You'll use the Travis CLI to get your access token.
 
 ### Travis for public repositories
 
+On the command line, log into Travis via Github OAuth:
+
+```sh
+travis login
+```
+
+Then get your token:
+
+```sh
+travis token
+# Your access token is <access token>
+```
+
+Then, in .fuci-travis.rb, configure fuci-travis with your access token
+as a string:
+
+```ruby
+Fuci::Travis.configure do |fu|
+  fu.access_token = '<access token>'
+end
+```
+
 ### Travis for private repositories
+
+This is similar to the process for public repositories, but uses the
+`--pro` flag.
+
+On the command line, log into Travis via Github OAuth:
+
+```sh
+travis login --pro
+```
+
+Then get your token:
+
+```sh
+travis token --pro
+# Your access token is <access token>
+```
+
+Then, in .fuci-travis.rb, **set `pro` to true** and configure
+fuci-travis with your access token as a string:
+
+```ruby
+Fuci::Travis.configure do |fu|
+  fu.pro          = true
+  fu.access_token = '<access token>'
+end
+```
 
 ## Usage
 
