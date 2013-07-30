@@ -127,6 +127,16 @@ on your local code:
 $ fuci master
 ```
 
+## Known incompatibilities/weirdnesses
+* Build configurations with more than one job. Multiple jobs typically
+mean test runs in different environments. Switching between these
+environments locally and automatically can be tricky and may not even
+be desirable.
+
+## TODO
+* Support for multiple jobs per build.
+* Cache last command and run it with some command-line option.
+
 ## Contributing
 
 1. Fork it
