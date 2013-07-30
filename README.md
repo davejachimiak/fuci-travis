@@ -12,9 +12,9 @@ And then execute:
 
     $ bundle
 
-Or install it yourself as:
+Bundling the binstub is highly recommended:
 
-    $ gem install fuci-travis
+    $ bundle binstubs fuci-travis
 
 ## Configuration
 ### Configuration file
