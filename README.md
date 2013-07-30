@@ -1,4 +1,5 @@
 # Fuci::Travis
+[![Build Status](https://travis-ci.org/davejachimiak/fuci-travis.png?branch=master)](https://travis-ci.org/davejachimiak/fuci-travis)
 
 Run Travis failures locally.
 
