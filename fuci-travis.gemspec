@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = Fuci::Travis::VERSION
   spec.authors       = ["Dave Jachimiak"]
   spec.email         = ["dave.jachimiak@gmail.com"]
-  spec.description   = %q{Run failures from your last Travis build from the command line.}
-  spec.summary       = %q{Run failures from your last Travis build from the command line.}
-  spec.homepage      = ""
+  spec.description   = %q{FUCK YOU CI: For Travis! :).}
+  spec.summary       = %q{Run failures from your recent Travis builds locally.}
+  spec.homepage      = "https://github.com/davejachimiak/fuci-travis"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
