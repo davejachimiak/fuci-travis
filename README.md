@@ -95,8 +95,11 @@ end
 
 ### Adding custom tester plugins
 
-Fuci ships with some tester plugins. If you want to add custom testers,
-add them in the configuration:
+Fuci tester plugins should be designed to returns two things: Whether
+a failed build has failed with a specific testing framework (e.g. RSpec,
+Cucumber) and the command-line command that runs those specific
+failures. As of now, Fuci ships with only an RSpec tester plugin. If
+you want to add custom testers, add them in the configuration:
 ```ruby
 Fuci::Travis.configure do |fu|
   fu.add_testers Fuci::Spec, Fuci::Jasmine
