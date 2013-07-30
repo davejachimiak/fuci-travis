@@ -1,7 +1,7 @@
 # Fuci::Travis
 [![Build Status](https://travis-ci.org/davejachimiak/fuci-travis.png?branch=master)](https://travis-ci.org/davejachimiak/fuci-travis)
 
-Run Travis failures locally.
+Run Travis failures locally. A [Fuci](https://github.com/davejachimiak/fuci) server extension.
 
 ## Installation
 
