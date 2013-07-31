@@ -1,5 +1,6 @@
 require 'forwardable'
 require 'fuci/git'
+require 'fuci/travis/cli_options'
 require 'fuci/travis/build/master'
 
 module Fuci
