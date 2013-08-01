@@ -147,7 +147,6 @@ environments locally and automatically can be tricky and may not even
 be desirable.
 
 ## TODO
-* Run failed tests from last pull request with some command-line option.
 * Rake task that bootstraps project with gitignore'd config file,
 complete with access_token and pro flag
 * Support for multiple jobs per build (?)
