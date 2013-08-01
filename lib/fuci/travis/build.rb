@@ -1,5 +1,6 @@
 require 'forwardable'
 require 'fuci/git'
+require 'fuci/travis/cli_options'
 require 'fuci/travis/build/master'
 
 module Fuci
@@ -39,8 +40,8 @@ module Fuci
 
       def self.create
         branch_name =
-          Fuci.options[:branch]       ||
-          Fuci::Travis.default_branch ||
+          Fuci::Travis::CliOptions.branch ||
+          Fuci::Travis.default_branch     ||
           current_branch_name
 
         from_branch_name branch_name

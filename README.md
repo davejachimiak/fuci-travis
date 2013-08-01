@@ -7,7 +7,7 @@ Run Travis failures locally. A [Fuci](https://github.com/davejachimiak/fuci) ser
 
 Add this line to your application's Gemfile:
 
-    gem 'fuci-travis', '~> 0.1'
+    gem 'fuci-travis', '~> 0.2'
 
 And then execute:
 
@@ -111,6 +111,10 @@ See the base Fuci repo for more information on custom testers.
 
 ## Usage
 
+See the
+[base Fuci repo](https://github.com/davejachimiak/fuci#native-command-line-options)
+for command-line options native to Fuci.
+
 Run your latest ci failures locally:
 ```sh
 $ fuci
@@ -134,7 +138,6 @@ environments locally and automatically can be tricky and may not even
 be desirable.
 
 ## TODO
-* Cache last command and run it with some command-line option.
 * Run failed tests from last pull request with some command-line option.
 * Rake task that bootstraps project with gitignore'd config file,
 complete with access_token and pro flag

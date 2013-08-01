@@ -2,6 +2,10 @@ require_relative '../../../spec_helper'
 require_relative '../../../../lib/fuci/travis/build'
 
 stub_class 'Fuci::Travis::Build::Master'
+stub_class 'Fuci::Travis::CliOptions' do
+  public
+  def branch; end;
+end
 
 describe Fuci::Travis::Build do
   describe '#initialize' do
@@ -72,13 +76,14 @@ describe Fuci::Travis::Build do
 
   describe '.create' do
     before do
+      @branch_from_cli = Fuci::Travis::CliOptions.stubs :branch
       @expect_from_branch_name = Fuci::Travis::Build.expects :from_branch_name
     end
 
     describe 'a branch option is declared from the command line' do
       before do
         @branch = 'master'
-        Fuci.stubs(:options).returns branch: @branch
+        @branch_from_cli.returns @branch
       end
 
       it 'takes priority' do
@@ -88,8 +93,6 @@ describe Fuci::Travis::Build do
     end
 
     describe 'a branch option is not declared from the command line' do
-      before { Fuci.stubs(:options).returns branch: nil }
-
       describe 'a default branch is specfied on Fuci::Travis' do
         before do
           @branch = 'dj-ci'
