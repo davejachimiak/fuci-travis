@@ -111,7 +111,9 @@ See the base Fuci repo for more information on custom testers.
 
 ## Usage
 
-To see command-line options native to Fuci, see the base Fuci repo.
+See the
+[base Fuci repo](https://github.com/davejachimiak/fuci#native-command-line-options)
+for command-line options native to Fuci.
 
 Run your latest ci failures locally:
 ```sh
