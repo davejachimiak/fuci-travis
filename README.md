@@ -120,15 +120,24 @@ Run your latest ci failures locally:
 $ fuci
 ```
 `fuci` will fetch the CI failures from the default branch declared in
-your configuration. If no default branch is declared in the
-configuration, `fuci` will fetch the CI failures from the branch of the
-same name as your current local branch.
+your configuration. If no default branch is declared , `fuci` will fetch
+the CI failures from the branch of the same name as your current local
+branch.
 
-To run a specific branch's failures branch, call `fuci` with the branch.
-For example, this will run the failures from the latest master build
-on your local code:
+Call `fuci` with a branch name to run a specific branch's failures
+branch. For example, this will run the failures from the latest master
+build on your local code:
 ```sh
 $ fuci master
+```
+
+Run failures from your last build triggered by a pull request:
+```sh
+$ fuci --pull-request
+```
+or
+```sh
+$ fuci -pr
 ```
 
 ## Known incompatibilities/weirdnesses
