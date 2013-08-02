@@ -132,18 +132,24 @@ $ fuci master
 ```
 
 Run failures from your last build triggered by a pull request:
+
 ```sh
 $ fuci --pull-request
 $ # or
 $ fuci -pr
 ```
-These will find the latest build triggered by a pull request from the
+
+Those will find the latest build triggered by a pull request from the
 remote branch of the same name as your current local branch. Use a
 branch name as an argument to run failures specific branch's pull
-request's build.
+request:
+
 ```sh
-$ fuci -pr my_feature_that_breaks_things
+$ git checkout another_branch
+$ fuci -pr my_feature_branch_that_breaks_things
 ```
+
+This all assumes pull requests into the master branch.
 
 ## Known incompatibilities/weirdnesses
 * Build configurations with more than one job. Multiple jobs typically
