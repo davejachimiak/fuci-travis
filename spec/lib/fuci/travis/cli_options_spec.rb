@@ -17,6 +17,29 @@ describe Fuci::Travis::CliOptions do
     end
   end
 
+  describe '.pull_request?' do
+    describe 'when --pull-request is passed in' do
+      it 'returns true' do
+        Fuci::Travis::CliOptions.stubs(:argv).returns ['--pull-request']
+        expect(Fuci::Travis::CliOptions.pull_request?).to_equal true
+      end
+    end
+
+    describe 'when -p is passed in' do
+      it 'returns true' do
+        Fuci::Travis::CliOptions.stubs(:argv).returns ['-p']
+        expect(Fuci::Travis::CliOptions.pull_request?).to_equal true
+      end
+    end
+
+    describe 'when neither are passed in' do
+      it 'returns false' do
+        Fuci::Travis::CliOptions.stubs(:argv).returns []
+        expect(Fuci::Travis::CliOptions.pull_request?).to_equal false
+      end
+    end
+  end
+
   describe '.argv' do
     it 'delegates to Fuci::CliOptions' do
       Fuci::CliOptions.stubs(:argv).returns argv = mock

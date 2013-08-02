@@ -136,7 +136,7 @@ Run failures from your last build triggered by a pull request:
 ```sh
 $ fuci --pull-request
 $ # or
-$ fuci -pr
+$ fuci -p
 ```
 
 Those will find the latest build triggered by a pull request from the
@@ -146,7 +146,7 @@ request:
 
 ```sh
 $ git checkout another_branch
-$ fuci -pr my_feature_branch_that_breaks_things
+$ fuci -p my_feature_branch_that_breaks_things
 ```
 
 This all assumes pull requests are for the master branch.
