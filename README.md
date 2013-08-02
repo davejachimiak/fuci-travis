@@ -139,6 +139,13 @@ or
 ```sh
 $ fuci -pr
 ```
+These will find the latest build triggered by a pull request from the
+remote branch of the same name as your current local branch. Use a
+branch name as an argument to run failures specific branch's pull
+request's build.
+```sh
+$ fuci -pr my_feature_that_breaks_things
+```
 
 ## Known incompatibilities/weirdnesses
 * Build configurations with more than one job. Multiple jobs typically
