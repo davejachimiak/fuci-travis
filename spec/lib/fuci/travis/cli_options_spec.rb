@@ -40,6 +40,13 @@ describe Fuci::Travis::CliOptions do
     end
   end
 
+  describe '.pull_request_branch' do
+    it 'returns the next argument after the pull request indicator' do
+      Fuci::Travis::CliOptions.stubs(:argv).returns ['-p', branch = 'branch']
+      expect(Fuci::Travis::CliOptions.pull_request_branch).to_equal branch
+    end
+  end
+
   describe '.argv' do
     it 'delegates to Fuci::CliOptions' do
       Fuci::CliOptions.stubs(:argv).returns argv = mock
