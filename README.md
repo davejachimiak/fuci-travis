@@ -134,9 +134,7 @@ $ fuci master
 Run failures from your last build triggered by a pull request:
 ```sh
 $ fuci --pull-request
-```
-or
-```sh
+$ # or
 $ fuci -pr
 ```
 These will find the latest build triggered by a pull request from the
