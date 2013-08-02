@@ -149,7 +149,7 @@ $ git checkout another_branch
 $ fuci -pr my_feature_branch_that_breaks_things
 ```
 
-This all assumes pull requests into the master branch.
+This all assumes pull requests are for the master branch.
 
 ## Known incompatibilities/weirdnesses
 * Build configurations with more than one job. Multiple jobs typically
