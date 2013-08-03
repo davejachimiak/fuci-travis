@@ -2,6 +2,7 @@ require_relative '../../../spec_helper'
 require_relative '../../../../lib/fuci/travis/build'
 
 stub_class 'Fuci::Travis::Build::Master'
+stub_class 'Fuci::Travis::Build::PullRequest'
 stub_class 'Fuci::Travis::CliOptions' do
   public
   def branch; end;
@@ -76,8 +77,25 @@ describe Fuci::Travis::Build do
 
   describe '.create' do
     before do
+      @pull_request    = Fuci::Travis::CliOptions.stubs :pull_request?
       @branch_from_cli = Fuci::Travis::CliOptions.stubs :branch
       @expect_from_branch_name = Fuci::Travis::Build.expects :from_branch_name
+    end
+
+    describe 'a pull request option is declared from the command line' do
+      before do
+        @pull_request.returns true
+        @expect_from_branch_name.never
+      end
+
+      it 'takes priority' do
+        Fuci::Travis::CliOptions.stubs(:pull_request_branch).
+          returns 'branch_name'
+        Fuci::Travis::Build::PullRequest.expects(:new).
+          with 'branch_name'
+
+        Fuci::Travis::Build.create
+      end
     end
 
     describe 'a branch option is declared from the command line' do

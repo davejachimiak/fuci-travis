@@ -39,6 +39,11 @@ module Fuci
       end
 
       def self.create
+        if Fuci::Travis::CliOptions.pull_request?
+          branch_name = Fuci::Travis::CliOptions.pull_request_branch
+          return Fuci::Travis::Build::PullRequest.new branch_name
+        end
+
         branch_name =
           Fuci::Travis::CliOptions.branch ||
           Fuci::Travis.default_branch     ||
