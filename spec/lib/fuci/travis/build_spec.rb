@@ -86,15 +86,37 @@ describe Fuci::Travis::Build do
       before do
         @pull_request.returns true
         @expect_from_branch_name.never
+        @pull_request_branch =
+          Fuci::Travis::CliOptions.stubs :pull_request_branch
       end
 
-      it 'takes priority' do
-        Fuci::Travis::CliOptions.stubs(:pull_request_branch).
-          returns 'branch_name'
-        Fuci::Travis::Build::PullRequest.expects(:new).
-          with 'branch_name'
+      describe 'when a pull request branch is declared' do
+        before do
+          @branch_name = 'branch_name'
+          @pull_request_branch.returns @branch_name
+        end
 
-        Fuci::Travis::Build.create
+        it 'instantiates pull request build with the branch' do
+          Fuci::Travis::Build::PullRequest.expects(:new).
+            with @branch_name
+
+          Fuci::Travis::Build.create
+        end
+      end
+
+      describe 'when a pull request branch is not declared' do
+        before do
+          @pull_request_branch.returns nil
+          Fuci::Travis::Build.stubs(:current_branch_name).
+            returns @current_branch_name = 'current_branch_name'
+        end
+
+        it 'instantiates a pull request build with the current branch name' do
+          Fuci::Travis::Build::PullRequest.expects(:new).
+            with @current_branch_name
+
+          Fuci::Travis::Build.create
+        end
       end
     end
 

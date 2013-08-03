@@ -40,7 +40,9 @@ module Fuci
 
       def self.create
         if Fuci::Travis::CliOptions.pull_request?
-          branch_name = Fuci::Travis::CliOptions.pull_request_branch
+          branch_name =
+            Fuci::Travis::CliOptions.pull_request_branch || current_branch_name
+
           return Fuci::Travis::Build::PullRequest.new branch_name
         end
 
