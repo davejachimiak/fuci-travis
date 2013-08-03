@@ -1,13 +1,15 @@
+require 'fuci/travis/build/sha_detectable'
+
 module Fuci
   module Travis
     class Build
       class Master < Build
+        include ShaDetectable
+
         def initialize; end;
 
         def build_branch
-          repo.builds.detect do |build|
-            build.commit.sha == remote_master_sha
-          end
+          detect_build_with_sha remote_master_sha
         end
       end
     end
