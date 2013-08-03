@@ -1,4 +1,5 @@
 require_relative '../../../../spec_helper'
+require_relative '../../../../../lib/fuci/travis/build'
 require_relative '../../../../../lib/fuci/travis/build/master'
 
 describe Fuci::Travis::Build::Master do

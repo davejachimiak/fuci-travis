@@ -3,7 +3,7 @@ require_relative '../build'
 module Fuci
   module Travis
     class Build
-      class Master < Fuci::Travis::Build
+      class Master < Build
         def initialize; end;
 
         def build_branch
