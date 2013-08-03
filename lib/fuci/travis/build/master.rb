@@ -1,5 +1,3 @@
-require_relative '../build'
-
 module Fuci
   module Travis
     class Build
