@@ -174,7 +174,7 @@ describe Fuci::Travis::Build do
       before { @branch_name = 'limb' }
 
       it 'creates a new generic build' do
-        Fuci::Travis::Build.stubs(:new).with(@branch_name).
+        Fuci::Travis::Build::Generic.stubs(:new).with(@branch_name).
           returns generic_build = mock
         build = Fuci::Travis::Build.from_branch_name @branch_name
         expect(build).to_equal generic_build
@@ -183,36 +183,9 @@ describe Fuci::Travis::Build do
   end
 
   describe '#build_branch' do
-    before do
-      @branch_name = 'my-ci'
-      @build       = mock
-      Fuci::Travis.stubs(:repo).returns @repo = mock
-      @build_wrapper = Fuci::Travis::Build.new @branch_name
-      @build_wrapper.expects(:puts).with "Fetching #{@branch_name} branch..."
-    end
-
-    describe 'when the branch is found' do
-      before do
-        @repo.stubs(:branches).returns branches = { @branch_name => @build }
-        @build_wrapper.expects(:puts).with "Using #{@branch_name} branch."
-      end
-
-      it 'logs fetching and calls branch hash with the branch_name on the repo' do
-        expect(@build_wrapper.send :build_branch ).to_equal @build
-      end
-    end
-
-    describe 'when branch is not found' do
-      before do
-        @repo.stubs(:branches).returns branches = {}
-        @build_wrapper.expects(:puts).
-          with "#{@branch_name} branch not found on Travis."
-        @build_wrapper.expects :exit
-      end
-
-      it 'logs that the branch could not be found and exits' do
-        @build_wrapper.send :build_branch
-      end
+    it 'raises not implemented' do
+      build = Fuci::Travis::Build.new 'branch'
+      expect { build.build_branch }.to_raise NotImplementedError
     end
   end
 end
