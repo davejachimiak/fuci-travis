@@ -12,7 +12,7 @@ module Fuci
       end
 
       def self.pull_request_branch
-        branch = ''
+        branch = nil
 
         argv.each_with_index do |arg, index|
           if PULL_REQUEST_INDICATORS.include? arg
