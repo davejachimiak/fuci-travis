@@ -2,6 +2,13 @@ require_relative '../../../../spec_helper'
 require_relative '../../../../../lib/fuci/travis/build'
 require_relative '../../../../../lib/fuci/travis/build/pull_request'
 
+module Fuci
+  module Git
+    class NoPullError < StandardError
+    end
+  end
+end
+
 describe Fuci::Travis::Build::PullRequest do
   before do
     @branch_name  = 'branch'
@@ -16,52 +23,52 @@ describe Fuci::Travis::Build::PullRequest do
 
   describe '#build_branch' do
     before do
-      @pull_request.stubs(:remote_sha_from).
-        with(@branch_name).
-        returns @sha = mock
+      @pull_merge_sha_from = @pull_request.
+        stubs(:pull_merge_sha_from).
+        with @branch_name
     end
 
-    describe 'when no build is detected' do
+    describe 'there is no pull request for the branch' do
       before do
-        @pull_request.stubs(:detect_build_with_sha).
-          with(@sha).
-          returns nil
+        @pull_merge_sha_from.raises Fuci::Git::NoPullError
       end
 
-      it 'logs that no build was detected for the branch and exits' do
+      it 'logs that no pull request was detected for the branch and exits' do
         @pull_request.expects(:puts).
-          with "No build was detected for a pull request from #{@branch_name}."
+          with "No pull request was detected for #{@branch_name}."
         @pull_request.expects(:exit)
 
         @pull_request.build_branch
       end
     end
 
-    describe 'when a build is detected' do
-      describe 'build detected is not a pull request' do
+    describe 'there is a pull request for the branch' do
+      before do
+        @pull_merge_sha_from.returns @sha = '23iadf89wro'
+        @detect_build_with_sha = @pull_request.
+          stubs(:detect_build_with_sha).with @sha
+      end
+
+      describe 'a build was not detected for the pull request' do
         before do
-          @pull_request.stubs(:detect_build_with_sha).
-            with(@sha).
-            returns @build = OpenStruct.new(pull_request?: false)
+          @detect_build_with_sha.with(@sha).returns nil
         end
 
-        it 'logs that the branch has no pull request and exits' do
+        it 'logs that no build was detected with pull request and exits' do
           @pull_request.expects(:puts).
-            with "No build has been triggered by a pull request from #{@branch_name}."
+            with "No build was detected for pull request from #{@branch_name}."
           @pull_request.expects(:exit)
 
           @pull_request.build_branch
         end
       end
 
-      describe 'build detected is a pull request' do
+      describe 'a build was detected for the pull request' do
         before do
-          @pull_request.stubs(:detect_build_with_sha).
-            with(@sha).
-            returns @build = OpenStruct.new(pull_request?: true)
+         @detect_build_with_sha.returns @build = mock
         end
 
-        it 'fetches the build with the remote sha of the branch name' do
+        it 'returns the build' do
           expect(@pull_request.build_branch).to_equal @build
         end
       end
