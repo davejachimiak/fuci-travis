@@ -131,7 +131,7 @@ build on your local code:
 $ fuci master
 ```
 
-Run failures from your last build triggered by a pull request:
+Run failures from your last pull-request-triggered build:
 
 ```sh
 $ fuci --pull-request
@@ -148,8 +148,6 @@ request:
 $ git checkout another_branch
 $ fuci -p my_feature_branch_that_breaks_things
 ```
-
-This all assumes pull requests are for the master branch.
 
 ## Known incompatibilities/weirdnesses
 * Build configurations with more than one job. Multiple jobs typically
