@@ -7,7 +7,7 @@ Run Travis failures locally. A [Fuci](https://github.com/davejachimiak/fuci) ser
 
 Add this line to your application's Gemfile:
 
-    gem 'fuci-travis', '~> 0.2'
+    gem 'fuci-travis', '~> 0.3'
 
 And then execute:
 
