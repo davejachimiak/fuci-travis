@@ -1,4 +1,5 @@
 require_relative '../../../../spec_helper'
+require_relative '../../../../../lib/fuci/travis/build'
 require_relative '../../../../../lib/fuci/travis/build/master'
 
 describe Fuci::Travis::Build::Master do
@@ -14,13 +15,11 @@ describe Fuci::Travis::Build::Master do
 
   describe '#build_branch' do
     it 'detects the build branch' do
-      Fuci::Travis.stubs(:repo).returns repo = mock
-
-      @master.stubs(:remote_master_sha).returns master_sha = '123abc'
-      commit = OpenStruct.new(sha: master_sha)
-      build  = OpenStruct.new(commit: commit)
-      repo.stubs(:builds).returns [build]
-
+      @master.stubs(:remote_master_sha).
+        returns remote_master_sha = mock
+      @master.stubs(:detect_build_with_sha).
+        with(remote_master_sha).
+        returns build = mock
       expect(@master.build_branch).to_equal build
     end
   end

@@ -2,6 +2,7 @@ require_relative '../../../spec_helper'
 require_relative '../../../../lib/fuci/travis/build'
 
 stub_class 'Fuci::Travis::Build::Master'
+stub_class 'Fuci::Travis::Build::PullRequest'
 stub_class 'Fuci::Travis::CliOptions' do
   public
   def branch; end;
@@ -76,8 +77,47 @@ describe Fuci::Travis::Build do
 
   describe '.create' do
     before do
+      @pull_request    = Fuci::Travis::CliOptions.stubs :pull_request?
       @branch_from_cli = Fuci::Travis::CliOptions.stubs :branch
       @expect_from_branch_name = Fuci::Travis::Build.expects :from_branch_name
+    end
+
+    describe 'a pull request option is declared from the command line' do
+      before do
+        @pull_request.returns true
+        @expect_from_branch_name.never
+        @pull_request_branch =
+          Fuci::Travis::CliOptions.stubs :pull_request_branch
+      end
+
+      describe 'when a pull request branch is declared' do
+        before do
+          @branch_name = 'branch_name'
+          @pull_request_branch.returns @branch_name
+        end
+
+        it 'instantiates pull request build with the branch' do
+          Fuci::Travis::Build::PullRequest.expects(:new).
+            with @branch_name
+
+          Fuci::Travis::Build.create
+        end
+      end
+
+      describe 'when a pull request branch is not declared' do
+        before do
+          @pull_request_branch.returns nil
+          Fuci::Travis::Build.stubs(:current_branch_name).
+            returns @current_branch_name = 'current_branch_name'
+        end
+
+        it 'instantiates a pull request build with the current branch name' do
+          Fuci::Travis::Build::PullRequest.expects(:new).
+            with @current_branch_name
+
+          Fuci::Travis::Build.create
+        end
+      end
     end
 
     describe 'a branch option is declared from the command line' do
@@ -134,7 +174,7 @@ describe Fuci::Travis::Build do
       before { @branch_name = 'limb' }
 
       it 'creates a new generic build' do
-        Fuci::Travis::Build.stubs(:new).with(@branch_name).
+        Fuci::Travis::Build::Generic.stubs(:new).with(@branch_name).
           returns generic_build = mock
         build = Fuci::Travis::Build.from_branch_name @branch_name
         expect(build).to_equal generic_build
@@ -143,36 +183,9 @@ describe Fuci::Travis::Build do
   end
 
   describe '#build_branch' do
-    before do
-      @branch_name = 'my-ci'
-      @build       = mock
-      Fuci::Travis.stubs(:repo).returns @repo = mock
-      @build_wrapper = Fuci::Travis::Build.new @branch_name
-      @build_wrapper.expects(:puts).with "Fetching #{@branch_name} branch..."
-    end
-
-    describe 'when the branch is found' do
-      before do
-        @repo.stubs(:branches).returns branches = { @branch_name => @build }
-        @build_wrapper.expects(:puts).with "Using #{@branch_name} branch."
-      end
-
-      it 'logs fetching and calls branch hash with the branch_name on the repo' do
-        expect(@build_wrapper.send :build_branch ).to_equal @build
-      end
-    end
-
-    describe 'when branch is not found' do
-      before do
-        @repo.stubs(:branches).returns branches = {}
-        @build_wrapper.expects(:puts).
-          with "#{@branch_name} branch not found on Travis."
-        @build_wrapper.expects :exit
-      end
-
-      it 'logs that the branch could not be found and exits' do
-        @build_wrapper.send :build_branch
-      end
+    it 'raises not implemented' do
+      build = Fuci::Travis::Build.new 'branch'
+      expect { build.build_branch }.to_raise NotImplementedError
     end
   end
 end

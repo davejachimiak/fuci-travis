@@ -7,7 +7,7 @@ Run Travis failures locally. A [Fuci](https://github.com/davejachimiak/fuci) ser
 
 Add this line to your application's Gemfile:
 
-    gem 'fuci-travis', '~> 0.2'
+    gem 'fuci-travis', '~> 0.3'
 
 And then execute:
 
@@ -120,15 +120,33 @@ Run your latest ci failures locally:
 $ fuci
 ```
 `fuci` will fetch the CI failures from the default branch declared in
-your configuration. If no default branch is declared in the
-configuration, `fuci` will fetch the CI failures from the branch of the
-same name as your current local branch.
+your configuration. If no default branch is declared , `fuci` will fetch
+the CI failures from the branch of the same name as your current local
+branch.
 
-To run a specific branch's failures branch, call `fuci` with the branch.
-For example, this will run the failures from the latest master build
-on your local code:
+Call `fuci` with a branch name to run a specific branch's failures
+branch. For example, this will run the failures from the latest master
+build on your local code:
 ```sh
 $ fuci master
+```
+
+Run failures from your last pull-request-triggered build:
+
+```sh
+$ fuci --pull-request
+$ # or
+$ fuci -p
+```
+
+Those will find the latest build triggered by a pull request from the
+remote branch of the same name as your current local branch. Use a
+branch name as an argument to run failures specific branch's pull
+request:
+
+```sh
+$ git checkout another_branch
+$ fuci -p my_feature_branch_that_breaks_things
 ```
 
 ## Known incompatibilities/weirdnesses
@@ -138,7 +156,6 @@ environments locally and automatically can be tricky and may not even
 be desirable.
 
 ## TODO
-* Run failed tests from last pull request with some command-line option.
 * Rake task that bootstraps project with gitignore'd config file,
 complete with access_token and pro flag
 * Support for multiple jobs per build (?)
