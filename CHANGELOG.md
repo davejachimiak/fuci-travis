@@ -1,3 +1,10 @@
+### version 0.3.0 *August 5, 2013*
+* Update Fuci to v0.3.0 which adds some git helpers
+* Adds `--pull-request`/`-p` option, which runs failures from the last
+build triggered by a pull request. Running it with a branch name as an
+argument will run failures from the last build triggered by a pull
+request on that branch name.
+
 ### version 0.2.0 *July 31, 2013*
 * Updates to Fuci 0.2.0 which adds `--last`/`-l` option
 
