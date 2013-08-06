@@ -131,8 +131,7 @@ build on your local code:
 $ fuci master
 ```
 
-Run failures from your last pull-request-triggered build:
-
+### Pull request builds
 ```sh
 $ fuci --pull-request
 $ # or
