@@ -1,3 +1,6 @@
+### version 0.4.0 *August 11, 2013*
+* Updates to Fuci 0.4.0 which adds native Cucumber tester plugin
+
 ### version 0.3.0 *August 5, 2013*
 * Update Fuci to v0.3.0 which adds some git helpers
 * Adds `--pull-request`/`-p` option, which runs failures from the last
