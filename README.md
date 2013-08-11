@@ -98,7 +98,7 @@ end
 Fuci tester plugins should return two things: Whether a failed build has
 failed with a specific testing framework (e.g. RSpec, Cucumber) and the
 command-line command that runs those specific failures. As of now, Fuci
-ships with only an RSpec tester plugin. If you want to add custom
+ships with RSpec and Cucumber tester plugins. If you want to add custom
 testers, add them in the configuration:
 ```ruby
 Fuci::Travis.configure do |fu|
@@ -107,12 +107,13 @@ Fuci::Travis.configure do |fu|
 end
 ```
 
-See the base Fuci repo for more information on custom testers.
+See the
+[base Fuci repo](https://github.com/davejachimiak/fuci#creating-tester-extensions)
+for more information on custom testers.
 
 ## Usage
 
-See the
-[base Fuci repo](https://github.com/davejachimiak/fuci#native-command-line-options)
+See the [base Fuci repo](https://github.com/davejachimiak/fuci#native-command-line-options)
 for command-line options native to Fuci.
 
 Run your latest ci failures locally:
