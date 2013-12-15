@@ -31,6 +31,7 @@ describe Fuci::Travis do
         end
         Fuci::Travis.stubs(:client).returns Client
         Fuci::Travis.expects(:puts).with 'Finding repo...'
+        Fuci::Travis.expects(:puts).with 'dj/fuci'
       end
 
       describe 'if the repo can be found' do
@@ -48,12 +49,13 @@ describe Fuci::Travis do
 
       describe 'if the repo cannot be found' do
         before do
-          Client::Repository.stubs(:find).raises
-          Fuci::Travis.expects(:puts).
-            with "#{@repo_name} repo could not be found on Travis."
         end
 
         it "logs that the repo couldn't be found and exits" do
+          Client::Repository.stubs(:find).raises
+          Fuci::Travis.expects(:puts).
+            with "#{@repo_name} repo could not be found on Travis."
+          Fuci::Travis.expects(:exit)
           Fuci::Travis.repo
         end
       end

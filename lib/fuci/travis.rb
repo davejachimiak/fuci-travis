@@ -32,11 +32,13 @@ module Fuci
     def self.repo
       return @repo if @repo
       puts 'Finding repo...'
+      puts remote_repo_name
       @repo = client::Repository.find remote_repo_name
       puts "Using repo: #{remote_repo_name}"
       @repo
     rescue
       puts "#{remote_repo_name} repo could not be found on Travis."
+      exit
     end
 
     def self.pro
