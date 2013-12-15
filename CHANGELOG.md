@@ -1,3 +1,7 @@
+### version 0.4.1 *December 14, 2013*
+* Updates to Fuci 0.4.2, which fetches the remote branch's name
+* Adds more logging for repo name
+
 ### version 0.4.0 *August 11, 2013*
 * Updates to Fuci 0.4.0 which adds native Cucumber tester plugin
 
